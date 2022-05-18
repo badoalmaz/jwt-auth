@@ -7,8 +7,17 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, NavLink } from 'react-router-dom';
+import { authContext, useAuth } from '../contexts/AuthContextProvider';
 
 export default function Navbar() {
+  const { user, checkAuth, logout } = useAuth();
+
+  React.useEffect(() => {
+    if (localStorage.getItem('token')) {
+      checkAuth();
+    }
+  }, []);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">

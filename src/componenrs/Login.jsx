@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { authContext, useAuth } from '../contexts/AuthContextProvider';
 
 function Copyright(props) {
   return (
@@ -34,15 +35,22 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  //   const handleSubmit = (event) => {
+  //     event.preventDefault();
+  //     const data = new FormData(event.currentTarget);
+  //     console.log({
+  //       email: data.get('email'),
+  //       password: data.get('password'),
+  //     });
+  //   };
 
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const { login, error } = useAuth();
+
+  function handleLogin(email, password) {
+    login(email, password);
+  }
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -62,8 +70,8 @@ export default function Login() {
             LOGIN
           </Typography>
           <Box
-            component="form"
-            onSubmit={handleSubmit}
+            // component="form"
+            // onSubmit={handleSubmit}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -76,6 +84,8 @@ export default function Login() {
               name="email"
               autoComplete="email"
               autoFocus
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
             <TextField
               margin="normal"
@@ -86,16 +96,19 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
             <Button
-              type="submit"
+              //   type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              onClick={() => handleLogin(email, password)}
             >
               Login
             </Button>

@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { authContext, useAuth } from '../contexts/AuthContextProvider';
 
 export default function Navbar() {
@@ -18,6 +18,7 @@ export default function Navbar() {
     }
   }, []);
 
+  const navigate = useNavigate();
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -34,17 +35,33 @@ export default function Navbar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             News
           </Typography>
-          <NavLink to="/login">
-            <Button color="inherit" sx={{ color: 'white' }}>
-              Login
-            </Button>
-          </NavLink>
 
-          <NavLink to="/register">
-            <Button color="inherit" sx={{ color: 'white' }}>
-              Register
+          {user ? (
+            <Button
+              color="inherit"
+              sx={{ color: 'white' }}
+              onClick={() => {
+                logout();
+                navigate('/login');
+              }}
+            >
+              Logout
             </Button>
-          </NavLink>
+          ) : (
+            <>
+              <NavLink to="/login">
+                <Button color="inherit" sx={{ color: 'white' }}>
+                  Login
+                </Button>
+              </NavLink>
+
+              <NavLink to="/register">
+                <Button color="inherit" sx={{ color: 'white' }}>
+                  Register
+                </Button>
+              </NavLink>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
